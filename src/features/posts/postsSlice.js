@@ -1,8 +1,7 @@
 import {createSlice, nanoid} from '@reduxjs/toolkit'
 import { sub } from 'date-fns';
 
-// manual
-/* const initialState = [{
+const initialState = [{
   id: '1',
   title: 'Learning Redux Toolkit',
   content: "I've heard good things.",
@@ -23,13 +22,7 @@ import { sub } from 'date-fns';
     wow: 0,
     heart: 0
   }
-}]*/
-
-const initialState = {
-  posts: [],
-  status: 'idle', //idle | loading | success | failed
-  error: null
-}
+}]
 
 const postsSlice = createSlice({
   name: 'posts',
