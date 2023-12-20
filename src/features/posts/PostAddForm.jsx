@@ -1,46 +1,42 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addNewPost } from "./postsSlice";
-import { getAllUsers } from "../users/userSlice";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAddNewPostMutation } from "./postsSlice";
+import { selectAllUsers } from "../users/userSlice";
 
-const PostAddFrom = () => {
-  const dispatch = useDispatch();
+const PostAddForm = () => {
+  const [addNewPost, { isLoading }] = useAddNewPostMutation();
 
-  const users = useSelector(getAllUsers);
+  const navigate = useNavigate();
+
+  const users = useSelector(selectAllUsers);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
-  const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
   const onChangedTitle = (e) => setTitle(e.target.value);
   const onChangedContent = (e) => setContent(e.target.value);
   const onChangedAuthor = (e) => setUserId(e.target.value);
 
-  const userOptions = users.map((user) => (
+  const userOptions = users?.map((user) => (
     <option key={user.id} value={user.id}>
       {user.name}
     </option>
   ));
 
-  const isSave =
-    Boolean(title) &&
-    Boolean(content) &&
-    Boolean(userId) &&
-    addRequestStatus === "idle";
+  const isSave = [title, content, userId].every(Boolean) && !isLoading;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isSave) {
       try {
-        setAddRequestStatus("pending");
-        dispatch(addNewPost({ title, body: content, userId })).unwarp();
+        await addNewPost({ title, body: content, userId });
         setTitle(" ");
         setContent(" ");
         setUserId(" ");
+        navigate("/");
       } catch (err) {
         console.error("Failed to save post");
-      } finally {
-        setAddRequestStatus("idle");
       }
     }
   };
@@ -78,4 +74,4 @@ const PostAddFrom = () => {
   );
 };
 
-export default PostAddFrom;
+export default PostAddForm;
