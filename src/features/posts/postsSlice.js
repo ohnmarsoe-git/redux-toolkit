@@ -1,6 +1,6 @@
 import { createSelector, createEntityAdapter} from '@reduxjs/toolkit'
 import { sub } from 'date-fns';
-import { apiSlice } from '../api/apiSlice';
+import { postsApiSlice } from '../api/PostsApiSlice';
 
 const postsAdapter = createEntityAdapter({
   sortComparer: (a,b) => b.date.localeCompare(a.date)
@@ -8,7 +8,7 @@ const postsAdapter = createEntityAdapter({
 
 const initialState = postsAdapter.getInitialState();
 
-export const extendedApiSlice = apiSlice.injectEndpoints({
+export const extendedApiSlice = postsApiSlice.injectEndpoints({
   endpoints: builder => ({
     getPosts: builder.query({
       query: () => '/posts',

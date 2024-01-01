@@ -1,12 +1,11 @@
 import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
-import { apiSlice } from '../api/apiSlice';
+import { postsApiSlice } from '../api/PostsApiSlice';
 
 const usersAdapter = createEntityAdapter()
 
 const initialState = usersAdapter.getInitialState()
 
-
-export const usersApiSlice = apiSlice.injectEndpoints({
+export const usersApiSlice = postsApiSlice.injectEndpoints({
   endpoints: builder => ({
     getUsers: builder.query({
         query: () => '/users',
